@@ -8,9 +8,9 @@ fn random_color() -> Color {
     let r: f32 = rand::gen_range(0.0, 1.0); // Random value between 0.0 and 1.0
     let g: f32 = rand::gen_range(0.0, 1.0);
     let b: f32 = rand::gen_range(0.0, 1.0);
-    let a: f32 = 1.0;  // You can randomize alpha as well if needed
+    let a: f32 = rand::gen_range(0.0, 1.0);  
     
-    Color::new(r, g, b, a)  // Return the random color
+    Color { r: r, g: g, b: b, a: a }  // Return the random color
 }
 
 fn window_conf() -> Conf {
@@ -35,7 +35,7 @@ async fn main() {
     }
 
     // Gravitational constant to control the strength of attraction
-    let gravitational_constant: f32 = 4700.0;
+    let gravitational_constant: f32 = 4900.0;
     let mut circles = Vec::new();
 
     let cx = screen_width() / 2.0;
@@ -91,8 +91,6 @@ async fn main() {
             forces
         };
 
-        // Update velocities and positions
-        // Update velocities and positions
         // Apply a damping factor to slow down the circles over time
         for i in 0..circles.len() {
             let velocity = circles[i].velocity; // Copy velocity to avoid mutable and immutable borrow conflict
