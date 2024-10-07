@@ -35,7 +35,7 @@ async fn main() {
     }
 
     // Gravitational constant to control the strength of attraction
-    let gravitational_constant: f32 = 4900.0;
+    let mut gravitational_constant: f32 = 5000.0;
 
     // screen center
     let cx = screen_width() / 2.0;
@@ -65,6 +65,19 @@ async fn main() {
     }
 
     loop {
+
+        // Check if the UP or DOWN arrow key is pressed to adjust gravity
+        if is_key_down(KeyCode::Up) {
+            gravitational_constant += 50.0; // Increase gravity
+        }
+
+        if is_key_down(KeyCode::Down) {
+            gravitational_constant -= 50.0; // Decrease gravity, but keep it positive
+            if gravitational_constant < 0.0 {
+                gravitational_constant = 0.0;
+            }
+        }
+
         if is_key_down(KeyCode::Escape) {
             break;
         }
@@ -116,7 +129,7 @@ async fn main() {
                 circles[i].position.y = circles[i].radius;
                 circles[i].velocity.y *= -1.0;
             }
-            
+
             if circles[i].position.y + circles[i].radius > screen_height() {
                 circles[i].position.y = screen_height() - circles[i].radius;
                 circles[i].velocity.y *= -1.0;
@@ -134,21 +147,24 @@ async fn main() {
         // Draw FPS counter
         draw_text(&format!("FPS: {:.0}", get_fps()), 10.0, 20.0, 30.0, BLACK);
 
+        // Gravity
+        draw_text(&format!("Gravity: {:.0}", gravitational_constant), 10.0, 50.0, 30.0, BLACK);
+
         // Draw number of circles
-        draw_text(&format!("Circles: {}", circles.len()), 10.0, 50.0, 30.0, BLACK);
+        draw_text(&format!("Circles: {}", circles.len()), 10.0, 80.0, 30.0, BLACK);
 
         // Calculate and draw average speed
         let total_speed: f32 = circles.iter().map(|c| c.velocity.length()).sum();
         let average_speed = total_speed / circles.len() as f32;
-        draw_text(&format!("Avg Speed: {:.2}", average_speed), 10.0, 80.0, 30.0, BLACK);
+        draw_text(&format!("Avg Speed: {:.2}", average_speed), 10.0, 110.0, 30.0, BLACK);
 
         // Calculate and draw total kinetic energy
         let total_kinetic_energy: f32 = circles.iter().map(|c| 0.5 * c.mass * c.velocity.length_squared()).sum();
-        draw_text(&format!("Total Energy: {:.2}", total_kinetic_energy), 10.0, 110.0, 30.0, BLACK);
+        draw_text(&format!("Total Energy: {:.2}", total_kinetic_energy), 10.0, 140.0, 30.0, BLACK);
 
         // Draw frame time
         let frame_time_ms = dt * 1000.0;
-        draw_text(&format!("Frame Time: {:.2} ms", frame_time_ms), 10.0, 140.0, 30.0, BLACK);
+        draw_text(&format!("Frame Time: {:.2} ms", frame_time_ms), 10.0, 170.0, 30.0, BLACK);
 
         next_frame().await;
     }
