@@ -10,7 +10,7 @@ fn random_color() -> Color {
     let b: f32 = rand::gen_range(0.0, 1.0);
     let a: f32 = rand::gen_range(0.0, 1.0);  
     
-    Color { r: r, g: g, b: b, a: a }  // Return the random color
+    Color { r, g: g, b: b, a: a } 
 }
 
 fn window_conf() -> Conf {
@@ -36,10 +36,12 @@ async fn main() {
 
     // Gravitational constant to control the strength of attraction
     let gravitational_constant: f32 = 4900.0;
-    let mut circles = Vec::new();
 
+    // screen center
     let cx = screen_width() / 2.0;
     let cy = screen_height() / 2.0;
+
+    let mut circles = Vec::new();
 
     for _ in 1..N {
 
@@ -104,14 +106,17 @@ async fn main() {
                 circles[i].position.x = circles[i].radius;
                 circles[i].velocity.x *= -1.0;
             }
+
             if circles[i].position.x + circles[i].radius > screen_width() {
                 circles[i].position.x = screen_width() - circles[i].radius;
                 circles[i].velocity.x *= -1.0;
             }
+
             if circles[i].position.y - circles[i].radius < 0.0 {
                 circles[i].position.y = circles[i].radius;
                 circles[i].velocity.y *= -1.0;
             }
+            
             if circles[i].position.y + circles[i].radius > screen_height() {
                 circles[i].position.y = screen_height() - circles[i].radius;
                 circles[i].velocity.y *= -1.0;
