@@ -5,7 +5,7 @@ const N:u32 = 75;
 fn random_color() -> Color {
     
     // Generate random values for red, green, blue, and alpha (RGBA)
-    let r: f32 = rand::gen_range(0.0, 1.0); \
+    let r: f32 = rand::gen_range(0.0, 1.0); 
     let g: f32 = rand::gen_range(0.0, 1.0);
     let b: f32 = rand::gen_range(0.0, 1.0);
     let a: f32 = rand::gen_range(0.0, 1.0);  
