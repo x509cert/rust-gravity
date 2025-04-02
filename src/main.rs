@@ -34,6 +34,25 @@ async fn main() {
         color: Color,
     }
 
+    fn bounce_off_edges(circle: &mut Circle) {
+        if circle.position.x - circle.radius < 0.0 {
+            circle.position.x = circle.radius;
+            circle.velocity.x *= -1.0;
+        }
+        if circle.position.x + circle.radius > screen_width() {
+            circle.position.x = screen_width() - circle.radius;
+            circle.velocity.x *= -1.0;
+        }
+        if circle.position.y - circle.radius < 0.0 {
+            circle.position.y = circle.radius;
+            circle.velocity.y *= -1.0;
+        }
+        if circle.position.y + circle.radius > screen_height() {
+            circle.position.y = screen_height() - circle.radius;
+            circle.velocity.y *= -1.0;
+        }
+    }
+
     // Gravitational constant to control the strength of attraction
     let mut gravitational_constant: f32 = 5000.0;
 
@@ -115,25 +134,7 @@ async fn main() {
             circles[i].position += velocity * dt;
 
             // Bounce off the window edges
-            if circles[i].position.x - circles[i].radius < 0.0 {
-                circles[i].position.x = circles[i].radius;
-                circles[i].velocity.x *= -1.0;
-            }
-
-            if circles[i].position.x + circles[i].radius > screen_width() {
-                circles[i].position.x = screen_width() - circles[i].radius;
-                circles[i].velocity.x *= -1.0;
-            }
-
-            if circles[i].position.y - circles[i].radius < 0.0 {
-                circles[i].position.y = circles[i].radius;
-                circles[i].velocity.y *= -1.0;
-            }
-
-            if circles[i].position.y + circles[i].radius > screen_height() {
-                circles[i].position.y = screen_height() - circles[i].radius;
-                circles[i].velocity.y *= -1.0;
-            }
+            bounce_off_edges(&mut circles[i]);
         }
 
         // Clear the screen
